@@ -2,3 +2,6 @@
 show_missing = True
 omit = 
     manage.py
+
+[xml]
+output = coverage-reports/coverage.xml
