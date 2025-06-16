@@ -21,16 +21,14 @@ jobs:
 
       - name: Install Requirements 
         run: |
-            pip install --upgrade pip
             pip install -r requirements.txt
             pip install coverage
 
       - name: Unit Tests & Coverage
         run:
-            coverage run manage.py test
+            coverage run --source='.' manage.py test -v3
             coverage xml
-            
-            
+               
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
