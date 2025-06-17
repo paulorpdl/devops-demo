@@ -1,0 +1,9 @@
+name: PR Workflow
+on:
+    pull_request: 
+        types: [opened, synchronize, reopened]
+             
+jobs:
+    sonar:
+        uses: ./.github/workflows/reusable_tests.yml
+        secrets: inherit
