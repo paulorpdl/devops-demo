@@ -25,11 +25,16 @@ jobs:
                     ${{ github.ref_type == 'tag' && github.ref_name || '' }}
                     ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
 
+            
             - name: Push To Registry
               uses: redhat-actions/push-to-registry@v2
               with:
+                username: ${{ github.actor }}
+                password: ${{ secrets.GITHUB_TOKEN }}
                 image: >
                     ghcr.io/${{ github.repository }}
+                registry: >
+                    ghcr.io/${{ github.repository_owner }}
                 tags: >
                     ${{ github.ref_type == 'tag' && github.ref_name || '' }}
                     ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
