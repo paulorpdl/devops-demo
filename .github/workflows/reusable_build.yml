@@ -1,0 +1,25 @@
+name: Build
+on:
+    workflow_call:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+
+            - name: Set variables
+              id: variables
+              run: |
+                echo "date=`date +%Y-%m-%d`" > $GITHUB_OUTPUT
+            
+            - name: Buildah Build
+              uses: redhat-actions/buildah-build@v2
+              with:
+                image: >
+                    ghcr.io/${{ github.repository }}
+                tags: >
+                    ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+                    ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
