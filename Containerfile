@@ -1,5 +1,7 @@
 FROM python:3.11.3-slim
 
+LABEL org.opencontainers.image.description "DevOps skills demonstration with Python, Containers & Kubernetes"
+
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
