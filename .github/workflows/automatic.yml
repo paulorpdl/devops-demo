@@ -10,6 +10,7 @@ jobs:
         secrets: inherit
     
     build:
+        needs: [tests]
         uses: ./.github/workflows/reusable_build.yml
         permissions: 
             packages: write
