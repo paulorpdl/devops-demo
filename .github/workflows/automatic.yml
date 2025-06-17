@@ -1,6 +1,8 @@
 name: Automatic Build
 on:
     push:
+        branches: 
+            - main
 
 jobs:
     tests:
