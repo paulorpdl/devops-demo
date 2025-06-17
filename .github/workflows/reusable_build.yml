@@ -22,6 +22,7 @@ jobs:
                 image: >
                     devops-demo
                 tags: >
+                    latest
                     ${{ github.ref_type == 'tag' && github.ref_name || '' }}
                     ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
                 oci: true
@@ -37,5 +38,6 @@ jobs:
                 registry: >
                     ghcr.io/${{ github.repository_owner }}
                 tags: >
+                    latest
                     ${{ github.ref_type == 'tag' && github.ref_name || '' }}
                     ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
