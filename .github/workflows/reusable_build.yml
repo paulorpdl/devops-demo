@@ -18,6 +18,7 @@ jobs:
             - name: Buildah Build
               uses: redhat-actions/buildah-build@v2
               with:
+                containerfiles: Containerfile
                 image: >
                     ghcr.io/${{ github.repository }}
                 tags: >
