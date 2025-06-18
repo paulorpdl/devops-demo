@@ -25,9 +25,9 @@ jobs:
             - uses: asdf-vm/actions/install@v4
 
             - name: Prepare deploy manifest
-              run: > 
-                kustomize edit set image
-                  ${{ inputs.image }}=ghcr.io/${{ github.repository_owner }}/${{ inputs.image }}@${{ inputs.digest}}
+              run: | 
+                kustomize edit set image \
+                ${{ inputs.image }}=ghcr.io/${{ github.repository_owner }}/${{ inputs.image }}@${{ inputs.digest}}
 
             - uses: actions/upload-artifact@v4
               with:
@@ -44,7 +44,7 @@ jobs:
             - name: Push manifests to OCR
               run: >
                 flux push artifact oci://ghcr.io/${{ github.repository_owner }}/manifests/${{ github.event.repository.name}}:latest
-                    --path="."
-                    --source="$(git config --get remote.origin.url)"
-                    --revision="$(git rev-parse --short HEAD)"
+                  --path="."
+                  --source="$(git config --get remote.origin.url)"
+                  --revision="$(git rev-parse --short HEAD)"
               
