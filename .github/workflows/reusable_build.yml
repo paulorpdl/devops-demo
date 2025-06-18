@@ -1,10 +1,25 @@
 name: Build
 on:
     workflow_call:
-
+        inputs:
+            image:
+                description: "Name for image build"
+                default: devops-demo
+                type: string
+            registry:
+                description: "Image registry"
+                type: string
+                required: false
+        outputs:
+            digest:
+                description: "Build image digest"
+                value: ${{ jobs.build.outputs.digest }}
 jobs:
     build:
         runs-on: ubuntu-latest
+        outputs:
+            image: ${{ steps.build.outputs.image }}
+            digest: ${{ steps.push.outputs.digest }}
         steps:
             - uses: actions/checkout@v4
               with:
@@ -16,28 +31,28 @@ jobs:
                 echo "date=`date +%Y-%m-%d`" > $GITHUB_OUTPUT
             
             - name: Buildah Build
+              id: build
               uses: redhat-actions/buildah-build@v2
               with:
                 containerfiles: Containerfile
-                image: >
-                    devops-demo
+                image: ${{ inputs.image }}
                 tags: >
-                    latest
                     ${{ github.ref_type == 'tag' && github.ref_name || '' }}
                     ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
+                    latest
                 oci: true
 
             
             - name: Push To Registry
+              id: push
               uses: redhat-actions/push-to-registry@v2
               with:
                 username: ${{ github.actor }}
                 password: ${{ secrets.GITHUB_TOKEN }}
-                image: >
-                    devops-demo
+                image: ${{ inputs.image }}
                 registry: >
                     ghcr.io/${{ github.repository_owner }}
                 tags: >
-                    latest
                     ${{ github.ref_type == 'tag' && github.ref_name || '' }}
                     ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
+                    latest
