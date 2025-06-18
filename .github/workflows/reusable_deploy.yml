@@ -1,0 +1,50 @@
+name: Build
+on:
+    workflow_call:
+        inputs:
+            image:
+                description: "Image Name"
+                default: devops-demo
+                type: string
+            digest:
+                description: "Image Digest for Manifests"
+                type: string
+
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: kubernetes/release
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+
+            - uses: asdf-vm/actions/install@v4
+
+            - name: Prepare deploy manifest
+              run: > 
+                kustomize edit set image
+                    ${{ inputs.image }}=ghcr.io/${{ github.repository_owner }}/${{ inputs.image }}@${{ inputs.digest}}
+
+            - uses: actions/upload-artifact@v4
+              with:
+                path: kubernetes/release/
+                name: kustomize.zip
+
+            - name: Podman Login
+              uses: redhat-actions/podman-login@v1
+              with:
+                username: ${{ github.actor }}
+                password: ${{ secrets.GITHUB_TOKEN }}
+                registry: ghcr.io/${{ github.repository_owner }}
+
+            - name: Push manifests to OCR
+              run: >
+                flux push artifact oci://ghcr.io/${{ github.repository_owner }}/manifests/${{ github.event.repository.name}}:latest
+                    --path="."
+                    --source="$(git config --get remote.origin.url)"
+                    --revision="$(git rev-parse --short HEAD)"
+              
