@@ -35,7 +35,7 @@ jobs:
             - uses: actions/upload-artifact@v4
               with:
                 path: kubernetes/
-                name: kustomize.zip
+                name: manifests
 
             - name: Podman Login
               uses: redhat-actions/podman-login@v1
