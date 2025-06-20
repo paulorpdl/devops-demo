@@ -23,3 +23,5 @@ RUN pip install -r requirements.txt \
 EXPOSE 8000
 
 ENTRYPOINT [ "/app/entrypoint.sh" ]
+
+HEALTHCHECK CMD curl http://localhost:8080/api/
