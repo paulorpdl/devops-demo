@@ -1,0 +1,24 @@
+name: Manual Deploy
+on:
+    workflow_dispatch:
+        #TODO
+            
+jobs:
+    tests:
+        uses: ./.github/workflows/reusable_tests.yml
+        secrets: inherit
+    
+    build:
+        needs: [tests]
+        uses: ./.github/workflows/reusable_build.yml
+        permissions: 
+            packages: write
+        secrets: inherit
+
+    deploy:
+        needs: [build]
+        uses: ./.github/workflows/reusable_deploy.yml
+        permissions:
+            packages: write
+        with:
+            digest: ${{ needs.build.outputs.digest }}
