@@ -17,6 +17,10 @@ jobs:
               with:
                 ssh-private-key: ${{ secrets.GITOPS_SSH_KEY }}
 
+            - name: Checkout to app branch
+              run: >
+                git checkout -b apps/${{ github.event.repository.name }}
+
             - name: Download a Build Artifact
               uses: actions/download-artifact@v4.3.0
               with:
@@ -27,9 +31,6 @@ jobs:
               run: |
                 git config user.name "github-actions[bot]"
                 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                git checkout -b apps/${{ github.event.repository.name }}
-                git branch --set-upstream-to=origin/apps/${{ github.event.repository.name }} apps/devops-demo
-                git pull origin
                 git add . 
                 git commit -am "Updating ${{ github.event.repository.name }} deployment "
                 git push origin apps/${{ github.event.repository.name }}
