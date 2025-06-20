@@ -4,12 +4,7 @@ on:
         #TODO
             
 jobs:
-    tests:
-        uses: ./.github/workflows/reusable_tests.yml
-        secrets: inherit
-    
     build:
-        needs: [tests]
         uses: ./.github/workflows/reusable_build.yml
         permissions: 
             packages: write
@@ -20,5 +15,14 @@ jobs:
         uses: ./.github/workflows/reusable_deploy.yml
         permissions:
             packages: write
+        secrets: inherit
         with:
             digest: ${{ needs.build.outputs.digest }}
+
+    sync:
+        needs: [deploy]
+        uses: ./.github/workflows/reusable_gitops_sync.yml
+        permissions:
+            packages: write
+        secrets: inherit
+

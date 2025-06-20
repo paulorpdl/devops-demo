@@ -30,12 +30,18 @@ jobs:
             - name: Kustomization Build
               working-directory: kubernetes
               run: | 
-                kustomize build release > manifest.yaml
+                kustomize build release > ${{ github.event.repository.name }}.yaml
 
             - uses: actions/upload-artifact@v4
               with:
                 path: kubernetes/
-                name: manifests
+                name: kubernetes
+
+            - uses: actions/upload-artifact@v4
+              with:
+                path: kubernetes/${{ github.event.repository.name }}.yaml
+                name: manifest.yaml
+                compression-level: 0
 
             - name: Podman Login
               uses: redhat-actions/podman-login@v1

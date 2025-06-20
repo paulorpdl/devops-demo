@@ -1,0 +1,36 @@
+name: Sync GitOps
+on:
+    workflow_call:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                repository: paulorpdl/devops-demo-gitops
+                ssh-key: ${{ secrets.GITOPS_SSH_KEY }}
+            
+            - uses: webfactory/ssh-agent@v0.9.1
+              name: Add GitOps SSH Key 
+              with:
+                ssh-private-key: ${{ secrets.GITOPS_SSH_KEY }}
+
+            - name: Download a Build Artifact
+              uses: actions/download-artifact@v4.3.0
+              with:
+                name: manifest.yaml
+                path: ./apps/kind-cluster/
+            
+            - name: Commit and push to GitOps Repo
+              run: |
+                git config user.name "github-actions[bot]"
+                git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                git checkout -b apps/${{ github.event.repository.name }}
+                git add . 
+                git commit -am "Updating ${{ github.event.repository.name }} deployment "
+                git push origin apps/${{ github.event.repository.name }}
+                
+
+        
