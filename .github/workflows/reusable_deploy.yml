@@ -39,7 +39,7 @@ jobs:
 
             - uses: actions/upload-artifact@v4
               with:
-                path: kubernetes/manifest.yaml
+                path: kubernetes/${{ github.event.repository.name }}.yaml
                 name: manifest.yaml
                 compression-level: 0
 
