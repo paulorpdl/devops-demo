@@ -29,6 +29,6 @@ flowchart TD
     C --> E[Merge to Main]
     E --> F[Automated Pipeline]
     F --> G[Unit Tests / Scan]
-    G --> H[Build & Push Image (GHCR)]
+    G --> H[Build & Push Image]
     H --> I[Generate K8s Manifests]
     I --> J[Push to GitOps Repo]
