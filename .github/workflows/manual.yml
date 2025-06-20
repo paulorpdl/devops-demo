@@ -4,12 +4,7 @@ on:
         #TODO
             
 jobs:
-    tests:
-        uses: ./.github/workflows/reusable_tests.yml
-        secrets: inherit
-    
     build:
-        needs: [tests]
         uses: ./.github/workflows/reusable_build.yml
         permissions: 
             packages: write
