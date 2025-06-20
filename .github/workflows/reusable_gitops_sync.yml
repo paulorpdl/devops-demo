@@ -18,8 +18,8 @@ jobs:
                 ssh-private-key: ${{ secrets.GITOPS_SSH_KEY }}
 
             - name: Checkout to app branch
-              run: >
-                git checkout -b apps/${{ github.event.repository.name }}
+              run: | 
+                git checkout -B apps/${{ github.event.repository.name }}
 
             - name: Download a Build Artifact
               uses: actions/download-artifact@v4.3.0
