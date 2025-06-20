@@ -21,7 +21,7 @@ jobs:
               uses: actions/download-artifact@v4.3.0
               with:
                 name: manifest.yaml
-                path: ${{ env.GITHUB_WORKSPACE }}/apps/kind-cluster/
+                path: ./apps/kind-cluster/
             
             - run:
                 ls -l */*
