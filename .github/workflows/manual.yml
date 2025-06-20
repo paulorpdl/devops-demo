@@ -17,3 +17,10 @@ jobs:
             packages: write
         with:
             digest: ${{ needs.build.outputs.digest }}
+
+    sync:
+        needs: [deploy]
+        uses: ./.github/workflows/reusable_gitops_sync.yml
+        permissions:
+            packages: write
+
