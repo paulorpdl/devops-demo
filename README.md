@@ -124,11 +124,11 @@ También se observan los cambios en el inventario del *Kustomization*.
 De igual manera al filtrar los recursos creados por el *label* que adiciona el *Kustomization* a todos los recursos que crea, podemos observar que ahora si se observa el *ConfigMap*.
 
 ### Pruebas de aplicacion
-![POST](resources\images\capture10.png)
+![POST](resources/images/capture10.png)
 
 Utilizando *kubectl port-forward* se habilito el acceso al servicio desplegado para hacer pruebas de creación de recursos como se observa.
 
-![GET](resources\images\capture11.png)
+![GET](resources/images/capture11.png)
 
 De igual forma se valido la obtención de datos existentes en el servicio.
 
