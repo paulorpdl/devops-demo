@@ -30,7 +30,7 @@ jobs:
             - name: Kustomization Build
               working-directory: kubernetes
               run: | 
-                kustomize build release > manifest.yaml
+                kustomize build release > ${{ github.event.repository.name }}.yaml
 
             - uses: actions/upload-artifact@v4
               with:
