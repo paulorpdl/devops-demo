@@ -23,7 +23,13 @@ jobs:
                 name: manifest.yaml
                 path: ./apps/kind-cluster/
             
-            - run:
-                ls -l */*
+            - name: Commit and push to GitOps Repo
+              run:
+                git config user.name "github-actions[bot]"
+                git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                git checkout -b apps/${{ github.event.repository.name }}
+                git add . -m "Updating ${{ github.event.repository.name }} deployment "
+                git push origin apps/${{ github.event.repository.name }}
+                
 
         
