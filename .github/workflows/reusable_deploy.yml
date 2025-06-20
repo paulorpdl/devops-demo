@@ -35,7 +35,13 @@ jobs:
             - uses: actions/upload-artifact@v4
               with:
                 path: kubernetes/
-                name: manifests
+                name: kubernetes
+
+            - uses: actions/upload-artifact@v4
+              with:
+                path: kubernetes/manifest.yaml
+                name: manifest.yaml
+                compression-level: 0
 
             - name: Podman Login
               uses: redhat-actions/podman-login@v1
