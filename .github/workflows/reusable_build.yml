@@ -29,6 +29,8 @@ jobs:
               id: variables
               run: |
                 echo "date=`date +%Y-%m-%d`" > $GITHUB_OUTPUT
+                ref="${{ github.ref_name }}"
+                echo "ref_normalized=${ref//\//-}" > $GITHUB_OUTPUT
             
             - name: Buildah Build
               id: build
@@ -38,8 +40,8 @@ jobs:
                 image: ${{ inputs.image }}
                 tags: >
                     ${{ github.ref_type == 'tag' && github.ref_name || '' }}
-                    ${{ github.ref_type == 'branch' && format('{0}-{1}', github.ref_name, steps.variables.outputs.date) || '' }}
-                    latest
+                    ${{ github.ref_type == 'branch' && format('{0}-{1}', steps.variables.outputs.ref_normalized , steps.variables.outputs.date) || '' }}
+                    ${{ github.ref_name == 'main' && 'latest' || '' }}
                 oci: true
 
             
